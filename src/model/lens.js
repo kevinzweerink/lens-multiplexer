@@ -1,7 +1,6 @@
-var Lens = function (name, poles, controller) {
+var Lens = function (name, poles) {
 	this.poles = [];
 	this.name = name;
-	this.controller = controller;
 
 	if (poles && poles.length > 0) {
 		this.poles = poles.map(function (p) { return p; })
