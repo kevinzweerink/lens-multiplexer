@@ -1,0 +1,59 @@
+ul {
+	padding-left : 1.5rem;
+}
+
+input[type=text] {
+	background : transparent;
+	border : 1px solid $rule;
+	color : $off_white;
+	font-family: $sans;
+	font-weight: 300;
+	font-size: 1rem;
+	padding: .6rem .8rem .4rem;
+	border-radius: 4px;
+	width: 100%;
+
+	&:focus {
+		outline: none;
+		border: 1px solid $off_white;
+	}
+}
+
+li {
+	padding-top: 1rem;
+	margin-bottom : 1rem;
+
+	& + li {
+		border-top : 1px solid $rule;
+	}
+
+	h1, h2, h3 {
+		display : inline-block;
+		vertical-align: middle;
+	}
+
+	.delete {
+		-webkit-appearance : none;
+		background: transparent;
+		border-radius: 50%;
+		color : $off_white;
+		font-size: 1rem;
+		border: 1px solid $off_white;
+		display: inline-block;
+		float: right;
+		margin-top : -.2rem;
+		opacity : 0.3;
+
+		&:hover {
+			opacity : 1;
+		}
+	}
+}
+
+.hidden {
+	display: none;
+}
+
+.template {
+	display: none;
+}

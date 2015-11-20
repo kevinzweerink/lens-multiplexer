@@ -2,9 +2,27 @@
 <html>
 <head>
 	<title>Lens Multiplexer</title>
+	<link href='css/main.css' rel='stylesheet'>
+	<meta charset="UTF-8">
 </head>
 <body>
 
-<script src='dist/lens-multiplexer.js'></script>
+<div class='editor'>
+	<nav>
+		<a href='#' class='toggle lenses' data-tab='lenses'>Schema</a>
+		<a href='#' class='toggle material' data-tab='material'>Material</a>
+	</nav>
+
+	<ul class='lenses view'>
+		<input type='text' placeholder='Add lens' class='create-lens'>
+	</ul>
+
+	<ul class='material view'>
+		<input type='text' placeholder='Add material' class='create-material'>
+	</ul>
+</div>
+
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src='dist/lens-multiplexer.js' charset='UTF-8'></script>
 </body>
 </html>

@@ -1,12 +1,59 @@
-var Model = function () {
+function Model() {
 	this.lenses = [];
 	this.material = [];
+}
+
+Model.prototype.import = function (data) {
+	_this = this;
+
+	this.lenses = data.lenses.map(function (l) {
+		return new Lens(l.name, l.poles);
+	});
+
+	this.material = data.material.map(function (m) {
+		var schema = _this.generateEmptyLensSchema();
+		var material = new Material(m.name, schema);
+
+		for (var i = 0; i < m.lenses.length; ++i) {
+			var lens = m.lenses[i];
+			for (var pole in lens.poles) {
+				var poleValue = lens.poles[pole];
+				material.setValueForPole(poleValue, lens.name, pole);
+			}
+		}
+
+		return material;
+	});
+}
+
+Model.prototype.addToUpdateQueue = function (fn) {
+	if (!this.updateQueue) {
+		this.updateQueue = [];
+	}
+
+	this.updateQueue.push(fn);
+}
+
+Model.prototype.updated = function () {
+	this.updateQueue.forEach(function (fn) {
+		fn();
+	});
 }
 
 Model.prototype.getLens = function (lens) {
 	return this.lenses.reduce(function (p, c, i) {
 		if (c.name === lens) {
 			return c;
+		}
+
+		return p;
+	}, undefined);
+}
+
+Model.prototype.getLensPosition = function (lens) {
+	return this.lenses.reduce(function (p, c, i) {
+		if (c.name === lens) {
+			return i;
 		}
 
 		return p;
@@ -23,10 +70,21 @@ Model.prototype.getMaterial = function (materialName) {
 	}, undefined);
 }
 
+Model.prototype.getMaterialPosition = function (material) {
+	return this.material.reduce(function (p, c, i) {
+		if (c.name === material) {
+			return i;
+		}
+
+		return p;
+	}, undefined);
+}
+
 Model.prototype.addLens = function (name, poles) {
 	var lens = new Lens(name, poles, this);
 	this.lenses.push(lens);
 	this.propagateSchema();
+	this.updated();
 }
 
 Model.prototype.addPoleToLens = function (lens, pole) {
@@ -35,15 +93,39 @@ Model.prototype.addPoleToLens = function (lens, pole) {
 		if (l) {
 			l.addPole(pole);
 			this.propagateSchema();
+			this.updated();
 		}
 	} else {
 		console.log('Could not add pole, please provide pole as string');
 	}
 }
 
+Model.prototype.removeLens = function (lens) {
+	var i = this.getLensPosition(lens);
+	this.lenses.splice(i, 1);
+	this.propagateSchema();
+	this.updated();
+}
+
+Model.prototype.removePoleFromLens = function (lens, pole) {
+	var lens = this.getLens(lens);
+	lens.removePole(pole);
+	this.propagateSchema();
+	this.updated();
+}
+
 Model.prototype.addMaterial = function (nodeName) {
 	var m = new Material(nodeName, this.generateEmptyLensSchema());
 	this.material.push(m);
+	this.updated();
+}
+
+Model.prototype.removeMaterial = function (nodeName) {
+	var index = this.getMaterialPosition(nodeName);
+	if (index !== undefined) {
+		this.material.splice(index, 1);
+		this.updated();
+	}
 }
 
 Model.prototype.setPoleValue = function (value, pole, lens, material) {
@@ -56,6 +138,7 @@ Model.prototype.setPoleValue = function (value, pole, lens, material) {
 	if (!p) return false;
 
 	p.value = value;
+	this.updated();
 
 }
 
@@ -67,7 +150,8 @@ Model.prototype.generateEmptyLensSchema = function () {
 				return {
 					name : pole,
 					index : index,
-					value : 0
+					value : 0,
+					lens : lens.name
 				}
 			})
 		}
@@ -83,18 +167,3 @@ Model.prototype.propagateSchema = function () {
 		m.extendWithSchema(schema);
 	}
 }
-
-var m = new Model();
-
-m.addLens('me/nyt', ['me', 'nyt']);
-
-m.addMaterial('Top News');
-
-m.addPoleToLens('me/nyt', 'cool');
-m.setPoleValue(1, 'cool', 'me/nyt', 'Top News');
-
-m.addMaterial('Recommended');
-
-m.addLens('user/customer/reader', ['user', 'customer', 'reader']);
-
-console.log(m);

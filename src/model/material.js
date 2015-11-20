@@ -1,4 +1,4 @@
-var Material = function (name, lenses) {
+function Material(name, lenses) {
 	this.name = name;
 	this.lenses = lenses;
 }
@@ -46,14 +46,9 @@ Material.prototype.extendWithSchema = function (schema) {
 	for (var i = 0; i < schema.length; ++i) {
 		var lensCandidate = schema[i];
 		var lens = this.getLens(lensCandidate.name);
-		
-		if (!lens) {
-			// First, if we don't have this lens already
-			// add it for sure
-			this.addLens(lensCandidate);
-		} else {
-			// Make sure our pole list matches the list from the schema
-			lens.poles = lensCandidate.poles.map(function (pole) {
+
+		if (lens) {
+			lensCandidate.poles = lensCandidate.poles.map(function (pole) {
 				var oldPole = _this.getPole(lens, pole.name);
 
 				if (oldPole) {
@@ -64,4 +59,6 @@ Material.prototype.extendWithSchema = function (schema) {
 			});
 		}
 	}
+
+	this.lenses = schema;
 }

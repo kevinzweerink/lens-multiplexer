@@ -1,0 +1,38 @@
+svg {
+	position: fixed;
+}
+.radius {
+	opacity : 0.04;
+}
+
+.schema.dragging .radius {
+	opacity : 0.4;
+}
+
+.schema text {
+	opacity : 0.4;
+}
+
+.schema.dragging text {
+	opacity : 1;
+}
+
+.node-label {
+	opacity : 0.8;
+}
+
+.mass {
+	cursor : move;
+}
+
+.schema {
+	opacity : 0.5;
+}
+
+.schema.focused {
+	opacity: 1;
+}
+
+.schema.focused .radius {
+	opacity: 0.2;
+}

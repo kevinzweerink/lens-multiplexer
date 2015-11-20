@@ -1,4 +1,4 @@
-var Lens = function (name, poles) {
+function Lens(name, poles) {
 	this.poles = [];
 	this.name = name;
 

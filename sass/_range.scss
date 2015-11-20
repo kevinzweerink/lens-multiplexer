@@ -1,0 +1,94 @@
+$trackHeight : 2px;
+$track : $blue;
+$thumbSize : 10px;
+$thumbColor : $white;
+$thumbOffset : -4px;
+
+input[type=range] {
+    /*removes default webkit styles*/
+    -webkit-appearance: none;
+    
+    /*fix for FF unable to apply focus style bug */
+    
+    /*required for proper track sizing in FF*/
+    width: 100%;
+    margin: 0;
+}
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: $trackHeight;
+    background: $track;
+    border: none;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: $thumbSize;
+    width: $thumbSize;
+    border-radius: 50%;
+    background: $thumbColor;
+    margin-top: $thumbOffset;
+}
+input[type=range]:focus {
+    outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: $track;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: $trackHeight;
+    background: $track;
+    border: none;
+    border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+    border: none;
+    height: $thumbSize;
+    width: $thumbSize;
+    border-radius: 50%;
+    background: $thumbColor;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+    outline: 1px solid white;
+    outline-offset: -1px;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: $trackHeight;
+    
+    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+    background: transparent;
+    
+    /*leave room for the larger thumb to overflow with a transparent border */
+    border-color: transparent;
+    border-width: 6px 0;
+
+    /*remove default tick marks*/
+    color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+    background: $track;
+    border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+    background: $track;
+    border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+    border: none;
+    height: $thumbSize;
+    width: $thumbSize;
+    border-radius: 50%;
+    background: $thumbColor;
+}
+input[type=range]:focus::-ms-fill-lower {
+    background: $track;
+}
+input[type=range]:focus::-ms-fill-upper {
+    background: $track;
+}
